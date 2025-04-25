@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JIRA Request Generator</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4a5568;
+            margin-top: 0;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: #4a5568;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d2d6dc;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .required::after {
+            content: " *";
+            color: #e53e3e;
+        }
+
+        button {
+            background-color: #4299e1;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #3182ce;
+        }
+
+        .button-container {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .result-container {
+            margin-top: 24px;
+            position: relative;
+        }
+
+        #resultText {
+            width: 100%;
+            min-height: 200px;
+            padding: 10px;
+            border: 1px solid #d2d6dc;
+            border-radius: 6px;
+            background-color: #f9fafb;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: #edf2f7;
+            color: #4a5568;
+            font-size: 12px;
+            padding: 4px 8px;
+        }
+
+        .copy-btn:hover {
+            background-color: #e2e8f0;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>JIRA Request Generator</h1>
+        
+        <div class="form-group">
+            <label for="taskDescription" class="required">Task Description</label>
+            <textarea id="taskDescription" placeholder="Enter task description"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="tsdLink">TSD Link (Optional)</label>
+            <input type="text" id="tsdLink" placeholder="https://tsd.example.com/123">
+        </div>
+        
+        <div class="form-group">
+            <label for="jiraApp" class="required">JIRA App</label>
+            <input type="text" id="jiraApp" placeholder="Enter JIRA app name">
+        </div>
+        
+        <div class="button-container">
+            <button id="generateBtn">Generate Message</button>
+        </div>
+        
+        <div id="resultContainer" class="result-container hidden">
+            <label for="resultText">Generated Message</label>
+            <textarea id="resultText" readonly></textarea>
+            <button id="copyBtn" class="copy-btn">Copy</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const generateBtn = document.getElementById('generateBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const resultContainer = document.getElementById('resultContainer');
+            const resultText = document.getElementById('resultText');
+            
+            generateBtn.addEventListener('click', function() {
+                const taskDescription = document.getElementById('taskDescription').value.trim();
+                const tsdLink = document.getElementById('tsdLink').value.trim();
+                const jiraApp = document.getElementById('jiraApp').value.trim();
+                
+                if (!taskDescription || !jiraApp) {
+                    alert('Please fill in the required fields (Task Description and JIRA App)');
+                    return;
+                }
+                
+                const message = `Good Morning 
+
+I need to create a JIRA task for ${taskDescription}
+
+Information :
+${tsdLink ? `Link to TSD ${tsdLink}` : 'Link to TSD N/A'}
+Jira APP : ${jiraApp}
+Thank You, Please let me know if this already processed
+
+Best Regards
+Rizki Susilo Ramadhan`;
+                
+                resultText.value = message;
+                resultContainer.classList.remove('hidden');
+            });
+            
+            copyBtn.addEventListener('click', function() {
+                resultText.select();
+                document.execCommand('copy');
+                
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = 'Copied!';
+                setTimeout(function() {
+                    copyBtn.textContent = originalText;
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
